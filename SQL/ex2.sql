@@ -16,7 +16,8 @@ CREATE TABLE UserPreferences
 			PRIMARY KEY (username),
             FOREIGN KEY (username)
 						REFERENCES User(username)
-                        ON DELETE CASCADE);
+                        ON DELETE CASCADE
+                        ON UPDATE CASCADE);
 DESCRIBE UserPreferences;
 
 
@@ -27,7 +28,8 @@ CREATE TABLE FantasyTeam
             username VARCHAR(35),
 			PRIMARY KEY (fantasyTeamId),
             FOREIGN KEY (username) 
-						REFERENCES UserPreferences(username));
+						REFERENCES UserPreferences(username)
+                        ON UPDATE CASCADE);
 DESCRIBE FantasyTeam;
 
 
