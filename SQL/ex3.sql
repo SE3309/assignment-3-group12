@@ -24,6 +24,13 @@ FROM (
 JOIN Team AS t ON t.teamName = r.teamName;
 
 
-
+-- create News row for each team
+INSERT INTO News (newsId, timeReleased, headline, description)
+SELECT
+  CONCAT('N_', t.teamId) AS newsId,
+  CURDATE() AS timeReleased,
+  CONCAT(t.teamName, ' update') AS headline,        
+  CONCAT('Mgr ', t.managerLastName, ' presser: ', t.teamName) AS description  
+FROM Team AS t;
 
 
