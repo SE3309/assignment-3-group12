@@ -5,6 +5,9 @@ VALUES
   ('ARS', 'Arsenal', 'Mikel', 'Arteta', 'London'),
   ('LIV', 'Liverpool', 'Jurgen', 'Klopp', 'Liverpool');
 
+SELECT *
+FROM Team;
+
 -- add players into Player tables without explicitely entering in teamID
 INSERT INTO Player (playerId, firstName, lastName, nationality, teamId)
 SELECT r.playerId, r.firstName, r.lastName, r.nationality, t.teamId
@@ -23,14 +26,21 @@ FROM (
 ) AS r
 JOIN Team AS t ON t.teamName = r.teamName;
 
+SELECT *
+FROM Player;
+
 
 -- create News row for each team
 INSERT INTO News (newsId, timeReleased, headline, description)
 SELECT
   CONCAT('N_', t.teamId) AS newsId,
   CURDATE() AS timeReleased,
-  CONCAT(t.teamName, ' update') AS headline,        
+  -- cut off any excess letters from the left after 15 characters using LEFT function
+  LEFT(CONCAT(t.teamName, ' update'), 15) AS headline,        
   CONCAT('Mgr ', t.managerLastName, ' presser: ', t.teamName) AS description  
 FROM Team AS t;
+
+SELECT *
+FROM News;
 
 
