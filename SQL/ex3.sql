@@ -5,7 +5,7 @@ VALUES
   ('ARS', 'Arsenal', 'Mikel', 'Arteta', 'London'),
   ('LIV', 'Liverpool', 'Jurgen', 'Klopp', 'Liverpool');
 
--- add players into Player tables without explicitely enter in teamID
+-- add players into Player tables without explicitely entering in teamID
 INSERT INTO Player (playerId, firstName, lastName, nationality, teamId)
 SELECT r.playerId, r.firstName, r.lastName, r.nationality, t.teamId
 FROM (
