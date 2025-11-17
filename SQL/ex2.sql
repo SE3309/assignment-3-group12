@@ -59,8 +59,7 @@ CREATE TABLE TeamEffect
             FOREIGN KEY (teamId)
 						REFERENCES Team(teamId),
 			FOREIGN KEY (newsId)
-						REFERENCES News(newsId)
-                        ON DELETE SET NULL);
+						REFERENCES News(newsId));
 DESCRIBE TeamEffect;
 
 
@@ -272,6 +271,8 @@ CREATE TABLE MatchProbabilities
             FOREIGN KEY (matchId)
 						REFERENCES SoccerMatch(matchId));
 DESCRIBE MatchProbabilities;
+
+
 
 
 
