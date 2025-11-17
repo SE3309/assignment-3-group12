@@ -77,6 +77,7 @@ CREATE TABLE TeamStats
             seasonId VARCHAR(20), 
             wins INT, 
             losses INT,
+            ties INT,
 			PRIMARY KEY (teamId, seasonId),
             FOREIGN KEY (teamId) 
 						REFERENCES Team(teamId),
