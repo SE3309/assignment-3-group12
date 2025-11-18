@@ -51,7 +51,7 @@ SELECT
 FROM SoccerMatch sm
 JOIN MatchStats ms_teamA 
       ON ms_teamA.matchId = sm.matchId
-     AND ms_teamA.teamId = ?          -- teamA, replace ? with literal
+     AND ms_teamA.teamId = 'TEAM001'    -- example ID replace with literal ID
 JOIN MatchStats ms_opponent 
       ON ms_opponent.matchId = sm.matchId
      AND ms_opponent.teamId <> ms_teamA.teamId
@@ -72,91 +72,23 @@ FROM FantasyTeam ft
 JOIN UserPreferences up ON up.username = ft.username
 JOIN Team t ON t.teamId = up.teamId
 JOIN Player p ON p.teamId = t.teamId
-WHERE ft.fantasyTeamId = ? -- replace ? with an actual fantasyTeamId
+WHERE ft.fantasyTeamId = 'FT001' -- example ID replace with an actual fantasyTeamId
 ORDER BY p.lastName, p.firstName;
 
 
--- Q7: Players who have ever been traded
+-- Q7: Players who have never been traded
 SELECT 
     p.playerId,
     p.firstName,
     p.lastName
 FROM Player p
-WHERE EXISTS (
+WHERE NOT EXISTS (
     SELECT 1
     FROM Trade tr
     WHERE tr.playerId = p.playerId
-);
+)
+ORDER BY p.lastName, p.firstName;
 
 
--- EXTRA QUERIES all somewhat similar to queries above
+-- EXTRA QUERIES shown on previous commits (final select query list commit)
 
-
--- Q8: Players and teams  affected by news (Player + teams + news)
-SELECT 
-    n.newsId,
-    n.headline,
-    te.teamId,
-    t.teamName
-FROM News n
-JOIN TeamEffect te ON te.newsId = n.newsId
-JOIN Team t ON t.teamId = te.teamId
-ORDER BY n.newsId;
-
--- Q9: team goals per a season (team + season + match)
-SELECT 
-    ms.teamId,
-    t.teamName,
-    sm.seasonId,
-    SUM(ms.goals) AS season_goals,
-    COUNT(DISTINCT ms.matchId) AS matches_played
-FROM MatchStats ms
-JOIN SoccerMatch sm ON sm.matchId = ms.matchId
-JOIN Team t ON t.teamId = ms.teamId
-GROUP BY ms.teamId, t.teamName, sm.seasonId
-ORDER BY season_goals DESC;
-
--- Q10: Most goals in a location (location + match + teams)
-SELECT 
-    l.locationId,
-    l.city,
-    l.stadium,
-    SUM(ms.goals) AS total_goals,
-    COUNT(DISTINCT ms.matchId) AS matches_count
-FROM MatchStats ms
-JOIN SoccerMatch sm ON sm.matchId = ms.matchId
-JOIN Location l ON l.locationId = sm.locationId
-GROUP BY l.locationId, l.city, l.stadium
-ORDER BY total_goals DESC;
-
-
--- Q11: Players Trade History (player + trade) 
-SELECT 
-    tr.tradeId,
-    tr.playerId,
-    CONCAT(p.firstName, ' ', p.lastName) AS player_name,
-    oldT.teamName AS old_team_name,
-    newT.teamName AS new_team_name
-FROM Trade tr
-JOIN Player p ON p.playerId = tr.playerId
-JOIN Team oldT ON oldT.teamId = tr.oldTeam
-JOIN Team newT ON newT.teamId = tr.newTeam
-ORDER BY p.playerId, tr.tradeId;
-
-
--- Q12: news articles about a players injury
-SELECT 
-    n.newsId,
-    n.headline,
-    pi.playerId,
-    p.firstName,
-    p.lastName,
-    t.teamName AS current_team,
-    pi.injuryType,
-    pi.injuryDate,
-    pi.expectedRecoveryTime
-FROM News n
-JOIN PlayerInjury pi ON pi.newsId = n.newsId
-JOIN Player p ON p.playerId = pi.playerId
-LEFT JOIN Team t ON t.teamId = p.teamId
-ORDER BY n.newsId;
