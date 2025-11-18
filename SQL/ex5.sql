@@ -5,6 +5,19 @@ WHERE homeCity = 'London';
 
 
 -- Q2: Positive Win Rate, or order by win rate percentage (Team + team stats + ranking?)
+SELECT 
+    ts.teamId,
+    t.teamName,
+    ts.seasonId,
+    ts.wins,
+    ts.losses,
+    (ts.wins / (ts.wins + ts.losses)) AS win_rate
+FROM TeamStats ts
+JOIN Team t ON t.teamId = ts.teamId
+WHERE (ts.wins + ts.losses) > 0
+  AND (ts.wins / (ts.wins + ts.losses)) > 0.5
+ORDER BY win_rate DESC;
+
 
 -- Q3: Career Goals for a player sum across seasons
 SELECT 
@@ -20,7 +33,18 @@ LEFT JOIN Team t ON t.teamId = p.teamId
 GROUP BY p.playerId, p.firstName, p.lastName, t.teamName
 ORDER BY career_goals DESC;
 
--- Q4: Players on a team (players + teams) (all teams with their players
+-- Q4: Players on a team (players + teams) (all teams with their players)
+SELECT 
+    t.teamId,
+    t.teamName,
+    p.playerId,
+    p.firstName,
+    p.lastName
+FROM Team t
+LEFT JOIN Player p ON p.teamId = t.teamId
+ORDER BY t.teamName, p.lastName, p.firstName;
+
+
 
 -- Q5: Players and teams  affected by news (Player + teams + news)
 SELECT 
