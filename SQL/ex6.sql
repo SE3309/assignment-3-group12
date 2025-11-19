@@ -22,23 +22,27 @@ SET ts.ties = d.draw_count
 WHERE ts.teamId = d.teamId
   AND ts.seasonId = d.seasonId;
 
+SET SQL_SAFE_UPDATES = 0;
 -- remove player injuries and the news linked to them that are recorded earlier than 2021
 DELETE pi
 FROM PlayerInjury AS pi
 JOIN News AS n
   ON n.newsId = pi.newsId
-WHERE n.timeReleased < '2021-01-01';
+WHERE n.timeReleased < '2022-01-01';
 
--- insert TournamentRanking rows for every tournament-season
-INSERT INTO TournamentRanking (tournamentId, seasonId, rankNumber)
-SELECT
-  t.tournamentId,
-  t.seasonId,
-  r.rankNumber
-FROM Tournament AS t
-JOIN Ranking AS r
-  ON r.rankNumber = 1
-LEFT JOIN TournamentRanking AS tr
-  ON tr.tournamentId = t.tournamentId
- AND tr.seasonId   = t.seasonId
-WHERE tr.tournamentId IS NULL;
+
+-- create a new trade for a random FORWARD player
+-- only affect 1 row just to not mess any data up
+INSERT INTO Trade (tradeId, playerId, oldTeam, newTeam)
+SELECT CONCAT('TRD', p.playerId) AS tradeId,
+       p.playerId,
+       p.teamId AS oldTeam,
+       t2.teamId AS newTeam
+FROM Player AS p
+JOIN Team AS t2
+  ON t2.teamId <> p.teamId
+WHERE p.position = 'FORWARD'
+LIMIT 1;
+
+
+
