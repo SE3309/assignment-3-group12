@@ -51,7 +51,7 @@ SELECT
 FROM SoccerMatch sm
 JOIN MatchStats ms_teamA 
       ON ms_teamA.matchId = sm.matchId
-     AND ms_teamA.teamId = 'TEAM001'   
+     AND ms_teamA.teamId = 'T00054'   
 JOIN MatchStats ms_opponent 
       ON ms_opponent.matchId = sm.matchId
      AND ms_opponent.teamId <> ms_teamA.teamId
@@ -72,7 +72,7 @@ FROM FantasyTeam ft
 JOIN UserPreferences up ON up.username = ft.username
 JOIN Team t ON t.teamId = up.teamId
 JOIN Player p ON p.teamId = t.teamId
-WHERE ft.fantasyTeamId = 'FT001' 
+WHERE ft.fantasyTeamId = 'FT001975' 
 ORDER BY p.lastName, p.firstName;
 
 
