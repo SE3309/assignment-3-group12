@@ -39,7 +39,7 @@ SELECT
   CURDATE() AS timeReleased,
   -- cut off any excess letters from the left after 15 characters using LEFT function
   LEFT(CONCAT(t.teamName, ' update'), 15) AS headline,        
-  CONCAT('Mgr ', t.managerLastName, ' presser: ', t.teamName) AS description  
+  LEFT(CONCAT('Mgr ', t.managerLastName, ' presser: ', t.teamName), 40) AS description  
 FROM Team AS t;
 
 SELECT *
