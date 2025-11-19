@@ -6,19 +6,26 @@ USE FantasySoccer;
 
 CREATE TABLE User
 			(username VARCHAR(35), 
-            password VARCHAR(40),
+            passwordHash VARCHAR(255),
 			PRIMARY KEY (username),
             CHECK (LENGTH(username) > 0));
 DESCRIBE User;
+CREATE TABLE UserRole
+			(username VARCHAR(35),
+            role VARCHAR(25),
+            PRIMARY KEY(username),
+            FOREIGN KEY (username)
+						REFERENCES User(username),
+			CHECK(role IN ('USER', 'ADMIN')));
+
 CREATE TABLE UserPreferences 
 			(username VARCHAR(35), 
             teamId VARCHAR(25),
 			PRIMARY KEY (username),
             FOREIGN KEY (username)
-						REFERENCES User(username)
-                        ON DELETE CASCADE
-                        ON UPDATE CASCADE);
+						REFERENCES User(username));
 DESCRIBE UserPreferences;
+
 
 
 
@@ -52,15 +59,6 @@ CREATE TABLE News
             description VARCHAR(40),
 			PRIMARY KEY (newsId));
 DESCRIBE News; 
-CREATE TABLE TeamEffect
-			(teamId VARCHAR(20),
-            newsId VARCHAR(20),
-            PRIMARY KEY (teamId, newsId),
-            FOREIGN KEY (teamId)
-						REFERENCES Team(teamId),
-			FOREIGN KEY (newsId)
-						REFERENCES News(newsId));
-DESCRIBE TeamEffect;
 
 
 
@@ -72,18 +70,24 @@ CREATE TABLE Team
             homeCity VARCHAR(15),
 			PRIMARY KEY (teamId));
 DESCRIBE Team;
-CREATE TABLE TeamStats
-			(teamId VARCHAR(20), 
-            seasonId VARCHAR(20), 
-            wins INT, 
-            losses INT,
-            ties INT,
-			PRIMARY KEY (teamId, seasonId),
-            FOREIGN KEY (teamId) 
+CREATE TABLE TeamEffect
+			(teamId VARCHAR(20),
+            newsId VARCHAR(20),
+            PRIMARY KEY (teamId, newsId),
+            FOREIGN KEY (teamId)
 						REFERENCES Team(teamId),
-            FOREIGN KEY (seasonId) 
-						REFERENCES Season(seasonId));
-DESCRIBE TeamStats;
+			FOREIGN KEY (newsId)
+						REFERENCES News(newsId));
+DESCRIBE TeamEffect;
+
+CREATE TABLE Season
+			(seasonId VARCHAR(20), 
+            year INT, 
+            startDate DATE, 
+            endDate DATE, 
+			PRIMARY KEY (seasonId),
+            CHECK (startDate != endDate));
+DESCRIBE Season;
 
 
 
@@ -102,17 +106,6 @@ CREATE TABLE LeagueTeams
 			FOREIGN KEY (teamId) 
 						REFERENCES Team(teamId));
 DESCRIBE LeagueTeams;
-
-
-
-CREATE TABLE Season
-			(seasonId VARCHAR(20), 
-            year INT, 
-            startDate DATE, 
-            endDate DATE, 
-			PRIMARY KEY (seasonId),
-            CHECK (startDate != endDate));
-DESCRIBE Season;
 CREATE TABLE SeasonManagement
 			(seasonId VARCHAR(20), 
             leagueId VARCHAR(20),
@@ -125,6 +118,21 @@ Describe SeasonManagement;
 
 
 
+CREATE TABLE TeamStats
+			(teamId VARCHAR(20), 
+            seasonId VARCHAR(20), 
+            wins INT, 
+            losses INT,
+            ties INT,
+			PRIMARY KEY (teamId, seasonId),
+            FOREIGN KEY (teamId) 
+						REFERENCES Team(teamId),
+            FOREIGN KEY (seasonId) 
+						REFERENCES Season(seasonId));
+DESCRIBE TeamStats;
+
+
+
 CREATE TABLE Tournament
 			(tournamentId VARCHAR(20),
             tournamentName VARCHAR(25),
@@ -133,8 +141,7 @@ CREATE TABLE Tournament
             seasonId VARCHAR(20),
             PRIMARY KEY (tournamentId),
             FOREIGN KEY (seasonId)
-						REFERENCES Season(seasonId)
-						ON DELETE CASCADE,
+						REFERENCES Season(seasonId),
 			CHECK(startDate != endDate));
 DESCRIBE Tournament;
 CREATE TABLE Ranking
@@ -151,8 +158,7 @@ CREATE TABLE TournamentRanking
             rankNumber INT,
             PRIMARY KEY (tournamentId, seasonId),
             FOREIGN KEY (tournamentId)
-						REFERENCES Tournament(tournamentId)
-                        ON DELETE CASCADE,
+						REFERENCES Tournament(tournamentId),
 			FOREIGN KEY (seasonId)
 						REFERENCES Season(seasonId),
 			FOREIGN KEY (rankNumber)
@@ -165,11 +171,14 @@ CREATE TABLE Player
 			(playerId VARCHAR(20),
             firstName VARCHAR(35),
             lastName VARCHAR(35),
+            position VARCHAR(35),
             nationality VARCHAR(25),
             teamId VARCHAR(20),
             PRIMARY KEY (playerId),
             FOREIGN KEY (teamId)
-						REFERENCES Team(teamId));
+						REFERENCES Team(teamId),
+			CHECK (position IN ('GOALKEEPER', 'DEFENDER', 'MIDFIELDER', 'FORWARD')));
+			
 DESCRIBE Player;
 CREATE TABLE PlayerStats
 			(playerId VARCHAR(20),
@@ -181,8 +190,7 @@ CREATE TABLE PlayerStats
             fouls INT,
             PRIMARY KEY (playerId, seasonId),
             FOREIGN KEY (playerId)
-						REFERENCES Player(playerId)
-                        ON DELETE CASCADE,
+						REFERENCES Player(playerId),
 			FOREIGN KEY (seasonId)
 						REFERENCES Season(seasonId));
 DESCRIBE PlayerStats;
