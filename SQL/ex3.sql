@@ -3,7 +3,9 @@ INSERT INTO Team (teamId, teamName, managerFirstName, managerLastName, homeCity)
 VALUES
   ('MCI', 'Manchester City', 'Pep', 'Guardiola', 'Manchester'),
   ('ARS', 'Arsenal', 'Mikel', 'Arteta', 'London'),
-  ('LIV', 'Liverpool', 'Jurgen', 'Klopp', 'Liverpool');
+  ('LIV', 'Liverpool', 'Jurgen', 'Klopp', 'Liverpool'),
+  ('RMADRID', 'Real Madrid', 'Xabi', 'Alonso', 'Madrid'),
+  ('FCBARCE', 'FC Barcelona', 'Hansi', 'Flick', 'Barcelona');
 
 SELECT *
 FROM Team;
