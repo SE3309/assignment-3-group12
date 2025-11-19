@@ -1,7 +1,18 @@
--- show the advertisement in the soccer match
--- don't show how much money the advertiser spent
-CREATE VIEW MatchAdvertisement
-AS SELECT advertisementId, advertiserName, message
-   FROM Advertisement;
+CREATE VIEW DefenderPlayers 
+AS SELECT *
+   FROM Player
+   WHERE position = 'DEFENDER';
+
+SELECT *
+FROM DefenderPlayers;
+
+INSERT INTO DefenderPlayers
+VALUES ('P001561', 'Sergio', 'Ramos', 'DEFENDER', 'Spain', 'RMADRID');
+
+
+
+
+
+
    
 
