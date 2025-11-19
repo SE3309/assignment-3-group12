@@ -22,7 +22,7 @@ SET ts.ties = d.draw_count
 WHERE ts.teamId = d.teamId
   AND ts.seasonId = d.seasonId;
 
-SET SQL_SAFE_UPDATES = 0;
+
 -- remove player injuries and the news linked to them that are recorded earlier than 2021
 DELETE pi
 FROM PlayerInjury AS pi
