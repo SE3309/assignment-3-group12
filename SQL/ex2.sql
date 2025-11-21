@@ -1,5 +1,5 @@
-DROP DATABASE IF EXISTS FantasySoccer;
-CREATE DATABASE FantasySoccer;
+DROP DATABASE IF EXISTS FantasySoccer; -- only use this if you want to reset all data in the DB
+CREATE DATABASE FantasySoccer; -- create a new DB from start
 USE FantasySoccer;
 
 
@@ -17,6 +17,7 @@ CREATE TABLE UserRole
             FOREIGN KEY (username)
 						REFERENCES User(username),
 			CHECK(role IN ('USER', 'ADMIN')));
+DESCRIBE UserRole;
 
 CREATE TABLE UserPreferences 
 			(username VARCHAR(35), 
