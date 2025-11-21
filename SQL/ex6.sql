@@ -1,4 +1,6 @@
 -- setting TeamStats ties to the number of draw matches a team played in each season
+SET SQL_SAFE_UPDATES = 0;
+
 UPDATE TeamStats AS ts
 JOIN (
   SELECT

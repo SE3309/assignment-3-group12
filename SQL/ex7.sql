@@ -7,7 +7,8 @@ SELECT *
 FROM DefenderPlayers;
 
 INSERT INTO DefenderPlayers
-VALUES ('P001561', 'Sergio', 'Ramos', 'DEFENDER', 'Spain', 'RMADRID');
+VALUES ('P001561', 'Sergio', 'Ramos', 'DEFENDER', 'Spain', 'T00060');
+
 
 
 

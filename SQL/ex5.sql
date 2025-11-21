@@ -1,7 +1,8 @@
 -- Q1 select team from a specific homecity (london)
 SELECT teamId, teamName, homeCity
 FROM Team
-WHERE homeCity = 'London';
+WHERE homeCity = 'Andrewmouth';
+
 
 -- Q2: Career Goals per Player across all seasons
 SELECT 
