@@ -287,9 +287,3 @@ DESCRIBE MatchProbabilities;
 
 
 
-
-
-SELECT *
-FROM MatchStats 
-LIMIT 5;
-
