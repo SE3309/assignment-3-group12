@@ -208,7 +208,15 @@ CREATE TABLE PlayerInjury
 						REFERENCES News(newsId),
 			CHECK (injuryType IN ('UPPER', 'LOWER', 'HEAD')));
 DESCRIBE PlayerInjury;
-
+CREATE TABLE FantasyRoster
+			(fantasyTeamId VARCHAR(25),
+			playerId VARCHAR(20),
+			PRIMARY KEY (fantasyTeamId, playerId),
+			FOREIGN KEY (fantasyTeamId)
+						REFERENCES FantasyTeam(fantasyTeamId),
+			FOREIGN KEY (playerId)
+						REFERENCES Player(playerId));
+DESCRIBE FantasyRoster;
 
 
 CREATE TABLE Trade
